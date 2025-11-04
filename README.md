@@ -4,10 +4,10 @@ A web-based system used to manage and track vaccination records. Built with PHP,
 ---
 
 ## 🛠️ Tech Stack
-- **Frontend**: HTML, Bootstrap, JavaScript
-- **Backend**: PHP
-- **Database**: MySQL
-- **Environment**: XAMPP (Apache + MySQL)
+- **Frontend**: 
+- **Backend**: 
+- **Database**: 
+- **Environment**: 
 
 ---
 
