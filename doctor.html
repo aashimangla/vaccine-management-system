@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VacciTrack - Doctor Dashboard</title>
+    <link rel="stylesheet" href="doctor.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header>
+            <div class="header-content">
+                <h1>Doctor Dashboard</h1>
+                <div class="user-section">
+                    <span>Dr. [Name]</span>
+                    <button class="logout-btn">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+           
+
+            <section class="patient-alerts">
+                <h2>Recent Patient Alerts</h2>
+                <div id="alerts-container">
+                    <!-- Alerts will be dynamically inserted here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    async function fetchAlerts() {
+            try {
+                const response = await fetch('http://localhost:3000/api/alerts');
+                const data = await response.json();
+                
+                const alertsContainer = document.getElementById('alerts-container');
+                alertsContainer.innerHTML = ''; // Clear existing alerts
+                
+                if (data.length === 0) {
+                    alertsContainer.innerHTML = '<p>No vaccination records found.</p>';
+                    return;
+                }
+                
+                data.forEach((record) => {
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert';
+                    
+                    const vaccines = record.vaccines || [];
+                    const vaccineInfo = vaccines.map(v => 
+                        `${v.name} (${new Date(v.dateAdministered).toLocaleDateString()})`
+                    ).join(', ');
+                    
+                    alertDiv.innerHTML = `
+                        <p>Child: ${record.childName}</p>
+                        <span>Date of Birth: ${new Date(record.dateOfBirth).toLocaleDateString()}</span><br>
+                        <span>Vaccines: ${vaccineInfo || 'No vaccines recorded'}</span>
+                    `;
+                    alertsContainer.appendChild(alertDiv);
+                });
+            } catch (error) {
+                console.error('Error fetching alerts:', error);
+                const alertsContainer = document.getElementById('alerts-container');
+                alertsContainer.innerHTML = '<p>Error loading vaccination records. Please try again later.</p>';
+            }
+        }
+        
+        // Call fetchAlerts when the page loads
+        document.addEventListener('DOMContentLoaded', fetchAlerts);
+    </script>
+</body>
+</html>

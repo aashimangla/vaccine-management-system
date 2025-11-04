@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VacciTrack - Role Selection</title>
+    <link href="role.css" rel="stylesheet">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h1>VacciTrack</h1>
+                <p class="subtitle">Vaccine Management System</p>
+            </div>
+            <p class="role-text">Please select your role:</p>
+            <div class="button-container">
+                <button class="role-button" id="parent-button">
+                    <span>I'm a Parent</span>
+                </button>
+                <button class="role-button" id="doctor-button">
+                    <span>I'm a Doctor</span>
+                </button>
+                <button class="role-button" id="admin-button">
+                    <span>I'm an Admin</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const parentButton = document.getElementById('parent-button');
+            const doctorButton = document.getElementById('doctor-button');
+            const adminButton = document.getElementById('admin-button');
+            
+            parentButton.addEventListener('click', function() {
+                window.location.href = 'parent.html';
+            });
+
+            doctorButton.addEventListener('click', function() {
+                window.location.href = 'doctor.html';
+            });
+            
+            adminButton.addEventListener('click', function() {
+                window.location.href = 'mainpage.html';
+            });
+        });
+    </script>
+</body>
+</html>

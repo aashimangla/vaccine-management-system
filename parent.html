@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VacciTrack - Child Vaccination</title>
+    <link href="parent.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="form-card">
+            <h1>Child Vaccination Registration</h1>
+            
+            <form id="childRegistrationForm">
+                <!-- Child Details -->
+                <div class="form-group">
+                    <label for="childName">Child's Full Name</label>
+                    <input type="text" id="childName" placeholder="Child's Full Name" required>
+                </div>
+                
+                <div class="form-grid">
+                    <input type="date" id="childDOB" required>
+                    <select id="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <!-- Available Vaccines -->
+                <div class="form-group">
+                    <label>Available Vaccines</label>
+                    <div id="vaccineList">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="bcg" name="vaccine" value="BCG">
+                            <label for="bcg">BCG Vaccine</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="polio" name="vaccine" value="Polio">
+                            <label for="polio">Polio Vaccine</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="mmr" name="vaccine" value="MMR">
+                            <label for="mmr">MMR Vaccine</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="hepatitisB" name="vaccine" value="Hepatitis B">
+                            <label for="hepatitisB">Hepatitis B Vaccine</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parent Email Input -->
+                <div class="form-group">
+                    <label for="parentEmail">Parent Email</label>
+                    <input type="email" id="parentEmail" placeholder="Parent's Email Address" required>
+                </div>
+
+                <button type="submit">Register Child</button>
+            </form>
+
+            <!-- Records Section -->
+            <div class="records-section">
+                <h2>Vaccination Records</h2>
+                <div id="vaccinationRecords">
+                    <!-- Records will be displayed here -->
+                </div>
+            </div>
+        </div>
+        <div class="faq-section">
+            <h1>FAQs</h1>
+            <div id="faqContainer"></div>
+        </div>
+<script src ='parent.js'></script>
+        <script>
+          
+            // Function to fetch FAQs from the backend
+             // Function to fetch FAQs from your server
+    async function fetchFAQs() {
+        try {
+            const response = await fetch('/api/faqs');
+            if (!response.ok) {
+                throw new Error('Failed to fetch FAQs');
+            }
+            const faqs = await response.json();
+            displayFAQs(faqs);
+        } catch (error) {
+            console.error('Error fetching FAQs:', error);
+            document.getElementById('faqContainer').innerHTML = `
+                <div style="color: red; padding: 10px; text-align: center;">
+                    Error loading FAQs. <button onclick="fetchFAQs()">Try Again</button>
+                </div>`;
+        }
+    }
+
+    // Function to display FAQs
+    function displayFAQs(faqs) {
+        const container = document.getElementById('faqContainer');
+        container.innerHTML = '';
+
+        faqs.forEach(faq => {
+            const faqDiv = document.createElement('div');
+            faqDiv.className = 'faq-item';
+            
+            faqDiv.innerHTML = `
+                <div class="faq-question">${faq.question}</div>
+                <div class="faq-answer">${faq.answer}</div>
+            `;
+
+            faqDiv.querySelector('.faq-question').addEventListener('click', function() {
+                const parent = this.parentElement;
+                
+                // Close other open FAQs
+                document.querySelectorAll('.faq-item.active').forEach(item => {
+                    if (item !== parent) {
+                        item.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current FAQ
+                parent.classList.toggle('active');
+            });
+
+            container.appendChild(faqDiv);
+        });
+    }
+    
+    // Load FAQs when page loads
+    document.addEventListener('DOMContentLoaded', fetchFAQs)
+        </script>
+    </div>
+</body>
+</html>
